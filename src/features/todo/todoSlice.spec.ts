@@ -1,4 +1,4 @@
-import todoReducer, { TodoState, add, remove } from "./todoSlice"
+import todoReducer, { TodoState, add, complete, remove } from "./todoSlice"
 
 describe("counter reducer", () => {
   const initialState: TodoState = {
@@ -46,5 +46,12 @@ describe("counter reducer", () => {
       actual.items.length === 2 &&
         actual.items.find((item) => item.id !== toRemove),
     ).toBeTruthy()
+  })
+
+  it("should handle tick", () => {
+    let actual = todoReducer(initialState, add("testing1"))
+    actual = todoReducer(actual, add("testing2"))
+    const toComplete = actual.items[1].id
+    actual = todoReducer(actual, complete(toComplete))
   })
 })

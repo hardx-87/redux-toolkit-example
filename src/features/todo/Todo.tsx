@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
-import { add, remove, selectTodos } from "./todoSlice"
+import { add, remove, complete, selectTodos } from "./todoSlice"
 import styles from "./Todo.module.css"
 
 export function Todo() {
@@ -25,9 +25,13 @@ export function Todo() {
     dispatch(remove(id))
   }
 
+  const onTodoCompletedClick = (id: number) => {
+    dispatch(complete(id))
+  }
+
   return (
-    <div className="todo-app">
-      <form className="form-new" onSubmit={onFormNewSubmit}>
+    <div className={styles.todoApp}>
+      <form className={styles.formNew} onSubmit={onFormNewSubmit}>
         <input value={newDesc} onInput={onInputChange} />
         <button>Create</button>
       </form>
@@ -35,7 +39,16 @@ export function Todo() {
       <ul className={styles.list}>
         {todos.length === 0 && <li>Create your first item</li>}
         {todos.map((todo) => (
-          <li key={todo.id}>
+          <li
+            key={todo.id}
+            className={todo.completed ? styles.completed || "" : ""}
+          >
+            <input
+              className={styles.checkbox}
+              type="checkbox"
+              checked={todo.completed}
+              onChange={(e) => onTodoCompletedClick(todo.id)}
+            />
             {todo.description}{" "}
             <button
               className={styles.btnText}

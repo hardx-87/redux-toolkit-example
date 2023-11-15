@@ -36,10 +36,16 @@ export const todoSlice = createSlice({
         state.items.splice(idx, 1)
       }
     },
+    complete: (state, action: PayloadAction<number>) => {
+      const idx = state.items.findIndex((item) => item.id === action.payload)
+      if (idx !== -1) {
+        state.items[idx].completed = !state.items[idx].completed
+      }
+    },
   },
 })
 
-export const { add, remove } = todoSlice.actions
+export const { add, remove, complete } = todoSlice.actions
 
 export const selectTodos = (state: RootState) => state.todo.items
 
